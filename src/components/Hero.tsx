@@ -43,8 +43,14 @@ const Hero: React.FC = () => {
   }
 
   const handleResumeClick = () => {
-    // This would typically download or open a resume PDF
-    alert('Resume download would be implemented here')
+    // Create a link element and trigger download
+    const link = document.createElement('a')
+    link.href = '/resume.pdf'
+    link.download = 'Shams_Tabraiz_Resume.pdf'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   return (
