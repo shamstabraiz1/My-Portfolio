@@ -59,15 +59,15 @@ const Skills: React.FC = () => {
   }
 
   return (
-    <section id="skills" className="py-20 bg-gray-50">
+    <section id="skills" className="py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Skills & Expertise
           </h2>
-          <div className="w-20 h-1 bg-primary-600 mx-auto mb-8"></div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <div className="w-20 h-1 bg-yellow-400 mx-auto mb-8"></div>
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Here are the technologies and skills I've developed through my studies and projects
           </p>
         </div>
@@ -79,8 +79,8 @@ const Skills: React.FC = () => {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300 ${activeCategory === category.id
-                ? 'bg-primary-600 text-white shadow-lg transform scale-105'
-                : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 shadow-md hover:shadow-lg'
+                ? 'bg-yellow-400 text-gray-900 shadow-lg transform scale-105'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white shadow-md hover:shadow-lg'
                 }`}
             >
               <span>{category.icon}</span>
@@ -94,11 +94,11 @@ const Skills: React.FC = () => {
           {filteredSkills.map((skill) => (
             <div
               key={skill.id}
-              className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-700"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{skill.name}</h3>
-                <span className="text-sm text-gray-500 capitalize">
+                <h3 className="text-lg font-semibold text-white">{skill.name}</h3>
+                <span className="text-sm text-gray-400 capitalize">
                   {skill.category.replace('-', ' ')}
                 </span>
               </div>
@@ -106,14 +106,14 @@ const Skills: React.FC = () => {
               {/* Proficiency Bar */}
               <div className="mb-3">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-gray-300">
                     {getProficiencyLabel(skill.proficiency)}
                   </span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-400">
                     {skill.proficiency}/5
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-700 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full transition-all duration-500 ${getProficiencyColor(skill.proficiency)}`}
                     style={{ width: `${(skill.proficiency / 5) * 100}%` }}
@@ -123,7 +123,7 @@ const Skills: React.FC = () => {
 
               {/* Years of Experience */}
               {skill.yearsOfExperience && (
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-400">
                   <span className="font-medium">{skill.yearsOfExperience}</span> year{skill.yearsOfExperience !== 1 ? 's' : ''} experience
                 </div>
               )}
@@ -132,34 +132,34 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Skills Summary */}
-        <div className="mt-16 bg-white rounded-lg p-8 shadow-md">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+        <div className="mt-16 bg-gray-800 rounded-lg p-8 shadow-md border border-gray-700">
+          <h3 className="text-2xl font-semibold text-white mb-6 text-center">
             Skills Overview
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-3xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
                 {skills.filter(s => s.category === 'languages').length}
               </div>
-              <div className="text-gray-600">Programming Languages</div>
+              <div className="text-gray-300">Programming Languages</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
                 {skills.filter(s => s.category === 'frameworks').length}
               </div>
-              <div className="text-gray-600">Frameworks & Libraries</div>
+              <div className="text-gray-300">Frameworks & Libraries</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
                 {skills.filter(s => s.category === 'tools').length}
               </div>
-              <div className="text-gray-600">Tools & Technologies</div>
+              <div className="text-gray-300">Tools & Technologies</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
                 {skills.filter(s => s.proficiency >= 4).length}
               </div>
-              <div className="text-gray-600">Advanced Skills</div>
+              <div className="text-gray-300">Advanced Skills</div>
             </div>
           </div>
         </div>
