@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 import { ContactForm, SocialLink } from '../types'
+import { emailjsConfig } from '../config/emailjs'
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState<ContactForm>({
@@ -11,6 +13,11 @@ const Contact: React.FC = () => {
   const [errors, setErrors] = useState<Partial<ContactForm>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(emailjsConfig.publicKey)
+  }, [])
 
   const socialLinks: SocialLink[] = [
     {
@@ -86,14 +93,44 @@ const Contact: React.FC = () => {
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
-    // Simulate processing time for better UX
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
     try {
-      // Create a well-formatted email
-      const subject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`)
-      const body = encodeURIComponent(
-        `Hello Shams,
+      console.log('🚀 Starting EmailJS send process...')
+      
+      // Use config values for EmailJS call
+      const result = await emailjs.send(
+        emailjsConfig.serviceID,
+        emailjsConfig.templateID,
+        {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        emailjsConfig.publicKey
+      )
+
+      console.log('✅ EmailJS Success:', result)
+      setSubmitStatus('success')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      return // Exit here if successful
+
+    } catch (error: any) {
+      console.error('❌ EmailJS Failed:', error)
+      console.error('Error details:', {
+        name: error?.name,
+        message: error?.message,
+        status: error?.status,
+        text: error?.text
+      })
+
+      // Show error message instead of falling back to mailto immediately
+      setSubmitStatus('error')
+
+      // Optional: Still provide mailto fallback after showing error
+      setTimeout(() => {
+        const subject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`)
+        const body = encodeURIComponent(
+          `Hello Shams,
 
 You have received a new message from your portfolio website:
 
@@ -107,20 +144,11 @@ ${formData.message}
 ---
 This message was sent from your portfolio contact form.
 Please reply directly to: ${formData.email}`
-      )
+        )
 
-      const mailtoLink = `mailto:shamstabraizkakar5@gmail.com?subject=${subject}&body=${body}`
-
-      // Open email client
-      window.location.href = mailtoLink
-
-      // Show success message
-      setSubmitStatus('success')
-      setFormData({ name: '', email: '', subject: '', message: '' })
-
-    } catch (error) {
-      console.error('Error processing form:', error)
-      setSubmitStatus('error')
+        const mailtoLink = `mailto:shamstabraizkakar5@gmail.com?subject=${subject}&body=${body}`
+        window.open(mailtoLink, '_blank')
+      }, 2000)
     } finally {
       setIsSubmitting(false)
     }
@@ -351,9 +379,9 @@ Please reply directly to: ${formData.email}`
               )}
 
               {submitStatus === 'error' && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-800">
-                    Sorry, there was an error sending your message. Please try again.
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-yellow-800">
+                    EmailJS is having issues. Opening your email client as backup...
                   </p>
                 </div>
               )}
